@@ -4,12 +4,12 @@ let lattestflightNumber = 100;
 const launch = {
   flightNumber: 100,
   mission: 'Kepler Exploration X',
-   rocket: 'Explorer IS1',
-   launchDaate: new Date('December 27, 2030'),
-   target: 'Kepler-422 b',
-   customer: ['ZTM', 'NASA'],
-   upcoming: true, 
-   success: true,
+  rocket: 'Explorer IS1',
+  launchDaate: new Date('December 27, 2030'),
+  target: 'Kepler-422 b',
+  customer: ['ZTM', 'NASA'],
+  upcoming: true, 
+  success: true,
 
 };
 

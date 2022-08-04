@@ -1,9 +1,8 @@
 const request = require('supertest');
-const { response } = require('../../app');
 const app = require('../../app');
 
 describe('TEST Get /launches', () => {
-  
+
   test('It should return 200 success', async () => {
     const response = await request(app)
       .get('/launches')
