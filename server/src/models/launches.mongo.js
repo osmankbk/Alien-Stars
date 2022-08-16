@@ -20,7 +20,7 @@ const launchesScheme = new mongoose.Schema({
     type: String,
     required: true,
   },
-  customer: [ String ],
+  customers: [ String ],
   upcoming: {
     type: Boolean,
     required: true,
@@ -31,3 +31,6 @@ const launchesScheme = new mongoose.Schema({
     default: true,
   },
 });
+
+// Connects lauchesSchema to "launches" collection
+module.exports = mongoose.model('Launch', launchesScheme);
