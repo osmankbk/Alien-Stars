@@ -1,9 +1,9 @@
 const launches = require('./launches.mongo');
 const planets = require('./planets.mongo');
+const env = require('dotenv');
 // const launches = new Map();
 
-
-const DEFAULT_FLIGHT_NUMBER = 100;
+const { DEFAULT_FLIGHT_NUMBER } = process.env;
 
 const launch = {
   flightNumber: 100,
@@ -20,8 +20,11 @@ const launch = {
 // launches.set(launch.flightNumber, launch);
 saveLaunch(launch);
 
-function launchWithIdExist(launchId) {
-  return launches.has(launchId);
+async function launchWithIdExist(launchId) {
+  const doesLaunchExist = await launches.findOne({
+    flightNumber: launchId
+  });
+  return doesLaunchExist;
 }
 
 async function getLattestFlightNumber() {
@@ -53,7 +56,7 @@ async function saveLaunch(launch) {
     
     if(!planet) throw new Error('No matching planet found!');
 
-    await launches.updateOne({
+    await launches.findOneAndUpdate({
       flightNumber: launch.flightNumber,
     }, launch, {
       upsert: true,
@@ -78,11 +81,15 @@ async function scheduleNewLaunch(launch) {
 };
 
 
-function abortLaunchById(launchId) {
-  const aborted = launches.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
-  return aborted;
+async function abortLaunchById(launchId) {
+  const aborted = await launches.updateOne({
+    flightNumber: launchId,
+  }, {
+    upcoming: false,
+    success: false
+  });
+
+  return aborted.modifiedCount === 1;
 }
 
 module.exports = {
