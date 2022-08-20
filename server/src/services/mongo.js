@@ -11,6 +11,16 @@ async function mongoConnect() {
   });
 }
 
+async function mongoDisconnect() {
+  await mongoose.disconnect()
+  .then(() => {
+    console.log('Mongo Disconnected!')
+  }).catch((err) => {
+    console.error(err);
+  });
+}
+
 module.exports = {
   mongoConnect,
+  mongoDisconnect,
 }
