@@ -1,5 +1,4 @@
-const dotevn = require('dotenv');
-dotevn.config();
+require('dotenv').config();
 
 const { 
   DEFAULT_LIMIT,

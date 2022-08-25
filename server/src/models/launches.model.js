@@ -1,28 +1,11 @@
 const axios = require('axios');
+require('dotenv').config();
 
 const launches = require('./launches.mongo');
 const planets = require('./planets.mongo');
-require('dotenv').config();
-// const launches = new Map();
 
 const DEFAULT_FLIGHT_NUMBER = process.env.PORT || 8000;
 const { SPACEX_API_URL } = process.env;
-
-
-//launch sample
-// const launch = {
-//   flightNumber: 100, // flight_number: 1
-//   mission: 'Kepler Exploration X', // name
-//   rocket: 'Explorer IS1', // rocket.name
-//   launchDate: new Date('December 27, 2030'), // date_local
-//   target: 'Kepler-442 b', // not applicable
-//   customers: ['ZTM', 'NASA'], // payload.customers for each customer.
-//   upcoming: true, // upcoming
-//   success: true, // success
-
-// };
-
-// saveLaunch(launch);
 
 async function loadLaunchData(){
 
