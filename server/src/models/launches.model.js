@@ -24,8 +24,33 @@ async function loadLaunchData(){
 };
 
 async function populateLauchesDatabase() {
-  console.log('...loading SpaceX Launches');
-  const response = await axios.post(SPACEX_API_URL, {
+  
+  const launchDocs = await getSpaceXLaunchData();
+
+  for(const launchDoc of launchDocs) {
+
+    const payloads = launchDoc.payloads;
+    const customers = payloads.flatMap((load) => load.customers);
+
+    const launch = {
+      flightNumber: launchDoc['flight_number'],
+      mission: launchDoc['name'],
+      rocket: launchDoc['rocket']['name'],
+      launchDate: new Date(launchDoc['date_local']), // date_local
+      customers, // payload.customers for each customer.
+      upcoming: launchDoc['upcoming'], // upcoming
+      success: launchDoc['success'], // success
+
+    }
+    console.log(`${launch.flightNumber}, ${launch.mission}`);
+    await saveLaunch(launch);
+  }
+}
+
+async function getSpaceXLaunchData() {
+  try {
+    console.log('...loading SpaceX Launches');
+    const response = await axios.post(SPACEX_API_URL, {
     query: {},
     options: {
       pagination: false,
@@ -45,29 +70,9 @@ async function populateLauchesDatabase() {
       ]
     }
   });
-
-  if(response.status !== 200) {
-    console.log('An Error occured downloading launch data!');
-    throw new Error('SPACEX API Error Occured!');
-  }
-  const launchDocs = response.data.docs;
-  for(const launchDoc of launchDocs) {
-
-    const payloads = launchDoc.payloads;
-    const customers = payloads.flatMap((load) => load.customers);
-
-    const launch = {
-      flightNumber: launchDoc['flight_number'],
-      mission: launchDoc['name'],
-      rocket: launchDoc['rocket']['name'],
-      launchDate: new Date(launchDoc['date_local']), // date_local
-      customers, // payload.customers for each customer.
-      upcoming: launchDoc['upcoming'], // upcoming
-      success: launchDoc['success'], // success
-
-    }
-    console.log(`${launch.flightNumber}, ${launch.mission}`);
-    await saveLaunch(launch);
+  return response.data.docs;
+  } catch(err) {
+    return console.error(`An Error occured downloading SPACEX API launch data! ${err}`);
   }
 }
 
