@@ -2,27 +2,27 @@ const axios = require('axios');
 
 const launches = require('./launches.mongo');
 const planets = require('./planets.mongo');
-const env = require('dotenv');
-env.config();
+require('dotenv').config();
 // const launches = new Map();
 
 const DEFAULT_FLIGHT_NUMBER = process.env.PORT || 8000;
 const { SPACEX_API_URL } = process.env;
 
-const launch = {
-  flightNumber: 100, // flight_number: 1
-  mission: 'Kepler Exploration X', // name
-  rocket: 'Explorer IS1', // rocket.name
-  launchDate: new Date('December 27, 2030'), // date_local
-  target: 'Kepler-442 b', // not applicable
-  customers: ['ZTM', 'NASA'], // payload.customers for each customer.
-  upcoming: true, // upcoming
-  success: true, // success
 
-};
+//launch sample
+// const launch = {
+//   flightNumber: 100, // flight_number: 1
+//   mission: 'Kepler Exploration X', // name
+//   rocket: 'Explorer IS1', // rocket.name
+//   launchDate: new Date('December 27, 2030'), // date_local
+//   target: 'Kepler-442 b', // not applicable
+//   customers: ['ZTM', 'NASA'], // payload.customers for each customer.
+//   upcoming: true, // upcoming
+//   success: true, // success
 
-// launches.set(launch.flightNumber, launch);
-saveLaunch(launch);
+// };
+
+// saveLaunch(launch);
 
 async function loadLaunchData(){
 
@@ -117,6 +117,9 @@ async function getAllLaunches(skip, limit) {
   return await launches.find({}, {
     '_id': 0,
     '__v': 0,
+  })
+  .sort({
+    flightNumber: 1
   })
   .skip(skip)
   .limit(limit);
