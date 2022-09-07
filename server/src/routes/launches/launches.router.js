@@ -9,7 +9,7 @@ const {
 } = require('./launches.controller');
 
 launchesRouter.get('/', httpGetAllLaunches);
-launchesRouter.post('/', httpAddNewLaunch)
-launchesRouter.delete('/:id', httpAbortLaunchById)
+launchesRouter.post('/', httpAddNewLaunch);
+launchesRouter.delete('/:id', httpAbortLaunchById);
 
 module.exports = launchesRouter;
